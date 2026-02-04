@@ -7,12 +7,6 @@ function App() {
 
   return (
     <div>
-      {/* <Title  label="Titre 1" />
-      <Title label="Titre 2" />
-      <Title label="Titre 3" />
-      <Title label="Titre 4" />
-      <Title/> */}
-      <Counter/>
       <PokeList/>
     </div>
   )
