@@ -1,38 +1,46 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import PokeCard from "../pokeCard";
+import "./index.css";
 
 const PokeList = () => {
-    const [pokemons, setPokemons] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const [pokemons, setPokemons] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetch("https://pokeapi.co/api/v2/pokemon?limit=20")
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("Données reçues:", data);
-                setPokemons(data.results);
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error("Erreur:", error);
-                setLoading(false);
-            });
-    }, []);
+  useEffect(() => {
+    fetch("http://localhost:3000/pokemons")
+      .then((res) => res.json())
+      .then((data) => {
+        setPokemons(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Erreur fetch :", err);
+        setLoading(false);
+      });
+  }, []);
 
-    if (loading) {
-        return <p>Chargement...</p>
-    }
+  if (loading) return <p>Chargement...</p>;
 
-    return (
-        <div>
-            <h2>Liste des Pokémon</h2>
-            <ul>
-                {pokemons.map((pokemon, index) => (
-                    <PokeCard key={index} pokemon={pokemon} />
-                ))}
-            </ul>
-        </div>
-    );
+  return (
+    <div style={{ padding: "20px" }}>
+      <h2>Liste des Pokémon</h2>
+
+      {/* BOUTON AJOUTER */}
+      <Link to="/add">
+        <button style={{ marginBottom: "20px", padding: "10px 20px" }}>
+          Ajouter un Pokémon
+        </button>
+      </Link>
+
+      {/* LISTE DES CARTES */}
+      <div className="poke-list">
+        {pokemons.map((pokemon) => (
+          <PokeCard key={pokemon.id} pokemon={pokemon} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default PokeList;

@@ -1,13 +1,20 @@
 import './App.css'
-
-import Title from './components/title'
-import Counter from './components/counter'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PokeList from './components/pokelist'
+import PokeDetails from './components/pokemondetails'
+import AddPokemon from "./components/add";
+
 function App() {
 
   return (
     <div>
-      <PokeList/>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<PokeList />} />
+          <Route path="/pokemon/:id" element={<PokeDetails />} />
+          <Route path="/add" element={<AddPokemon />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }

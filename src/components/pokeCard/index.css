@@ -1,0 +1,147 @@
+LISTE DE CARTES
+.poke-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+/* CONTENEUR */
+.poke-card-container {
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+
+/* WRAPPER 3D */
+.poke-card-wrapper {
+  perspective: 1600px;
+}
+
+/* INNER ROTATION */
+.poke-card-inner {
+  width: 250px;
+  height: 350px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.9s ease;
+}
+
+.poke-card-wrapper:hover .poke-card-inner {
+  transform: rotateY(360deg) translateY(-6px);
+}
+
+/* BASE CARTE */
+.poke-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  position: absolute;
+  backface-visibility: hidden;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+}
+
+/* BACK */
+.poke-card-back {
+  transform: rotateY(180deg);
+}
+
+.back-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+/* FRONT - TCG */
+.tcg-card {
+  border: 6px solid #f5d76e;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(#fdfdfd, #e6e6e6);
+}
+
+/* HEADER */
+.tcg-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  text-transform: capitalize;
+  font-size: 16px;
+}
+
+.tcg-hp {
+  color: #d32f2f;
+}
+
+/* EVOLUTION */
+.tcg-evolution {
+  font-size: 11px;
+  font-style: italic;
+  margin-bottom: 4px;
+}
+
+/* IMAGE */
+.tcg-image-frame {
+  background: white;
+  border: 3px solid #999;
+  border-radius: 6px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.tcg-image-frame img {
+  max-height: 140px;
+}
+
+/* ATTAQUES */
+.tcg-attacks {
+  border-top: 1px solid #aaa;
+  padding-top: 6px;
+  flex-grow: 1;
+}
+
+.tcg-attack {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  text-transform: capitalize;
+  margin-bottom: 4px;
+}
+
+/* FOOTER */
+.tcg-footer {
+  font-size: 10px;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #aaa;
+  padding-top: 4px;
+}
+
+/* TEXTE */
+.tcg-card * {
+  color: #000;
+}
+
+/* TYPES */
+.fire { background: linear-gradient(135deg, #ff9a3c, #ff612b); }
+.water { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+.grass { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+.electric { background: linear-gradient(135deg, #fddb92, #fceabb); }
+.ice { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); }
+.fighting { background: linear-gradient(135deg, #d56723, #b14a10); }
+.poison { background: linear-gradient(135deg, #b97fc9, #8e44ad); }
+.ground { background: linear-gradient(135deg, #f7de3f, #ab9842); }
+.flying { background: linear-gradient(135deg, #a98ff3, #d5c7f7); }
+.psychic { background: linear-gradient(135deg, #fa709a, #fee140); }
+.bug { background: linear-gradient(135deg, #a8b820, #c6d16e); }
+.rock { background: linear-gradient(135deg, #b8a038, #d1c17d); }
+.ghost { background: linear-gradient(135deg, #735797, #a292bc); }
+.dragon { background: linear-gradient(135deg, #667db6, #0082c8); }
+.dark { background: linear-gradient(135deg, #705848, #3a2e25); }
+.steel { background: linear-gradient(135deg, #b8b8d0, #d1d1e0); }
+.fairy { background: linear-gradient(135deg, #fbc2eb, #a6c1ee); }
+.normal { background: linear-gradient(135deg, #e6e9f0, #eef1f5); }
