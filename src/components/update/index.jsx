@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import "./index.css";
 
 const TYPE_IMAGES = {
@@ -23,20 +23,30 @@ const TYPE_IMAGES = {
   Fairy: "http://localhost:3000/assets/types/18.png",
 };
 
-const AddPokemon = () => {
+const UpdatePokemon = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [pokemon, setPokemon] = useState(null);
   const [imageError, setImageError] = useState(false);
   const [shinyError, setShinyError] = useState(false);
-  const [pokemon, setPokemon] = useState({
-    name: { english: "", japanese: "", chinese: "", french: "" },
-    type: [],
-    base: { HP: 1, Attack: 1, Defense: 1, SpecialAttack: 1, SpecialDefense: 1, Speed: 1 },
-    image: "",
-    shiny: "",
-  });
+
+  useEffect(() => {
+    const fetchPokemon = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/pokemons/${id}`);
+        const data = await res.json();
+        setPokemon(data);
+      } catch (err) {
+        console.error(err);
+        alert("Erreur lors du chargement du Pokémon");
+      }
+    };
+    fetchPokemon();
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (!pokemon) return;
     if (Object.keys(pokemon.base).includes(name)) {
       setPokemon({ ...pokemon, base: { ...pokemon.base, [name]: Number(value) } });
     } else if (Object.keys(pokemon.name).includes(name)) {
@@ -51,6 +61,7 @@ const AddPokemon = () => {
   };
 
   const toggleType = (type) => {
+    if (!pokemon) return;
     let newTypes = [...pokemon.type];
     if (newTypes.includes(type)) {
       newTypes = newTypes.filter((t) => t !== type);
@@ -62,59 +73,50 @@ const AddPokemon = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Vérification obligatoire des champs
-    if (!pokemon.image || !pokemon.shiny || Object.values(pokemon.name).some((v) => v.trim() === "")) {
-      alert("Veuillez remplir tous les champs de nom et fournir les images (normale et shiny).");
+    if (!pokemon.image || !pokemon.shiny || Object.values(pokemon.name).some(v => v.trim() === "")) {
+      alert("Veuillez remplir tous les champs de nom et images");
       return;
     }
     if (pokemon.type.length === 0) {
-      alert("Veuillez sélectionner au moins un type (max 2).");
+      alert("Veuillez sélectionner au moins un type (max 2)");
       return;
     }
 
     try {
-      const response = await fetch("http://localhost:3000/pokemons", {
-        method: "POST",
+      const res = await fetch(`http://localhost:3000/pokemons/${id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(pokemon),
       });
-      if (response.ok) navigate("/");
-      else alert("Erreur lors de l'ajout du Pokémon");
+      if (res.ok) navigate("/");
+      else alert("Erreur lors de la mise à jour du Pokémon");
     } catch (err) {
       console.error(err);
       alert("Erreur serveur");
     }
   };
 
-  return (
-    <div className="add-container">
-      <div className="add-card">
-        <h2>Ajouter un Pokémon</h2>
+  if (!pokemon) return <p>Chargement...</p>;
 
-        <button className="back-button" onClick={() => navigate(-1)}>
-          Retour
-        </button>
+  return (
+    <div className="update-container">
+      <div className="update-card">
+        <h2>Modifier le Pokémon</h2>
+        <button className="back-button" onClick={() => navigate(-1)}>Retour</button>
 
         <form onSubmit={handleSubmit}>
-          {/* NOMS */}
-          {Object.keys(pokemon.name).map((lang) => (
+          {/* Noms */}
+          {Object.keys(pokemon.name).map(lang => (
             <div key={lang} className="input-group">
               <label>Nom ({lang})</label>
-              <input
-                type="text"
-                name={lang}
-                value={pokemon.name[lang]}
-                onChange={handleChange}
-                required
-              />
+              <input type="text" name={lang} value={pokemon.name[lang]} onChange={handleChange} required />
             </div>
           ))}
 
-          {/* TYPES */}
+          {/* Types */}
           <h3>Types (max 2)</h3>
           <div className="type-selector">
-            {Object.keys(TYPE_IMAGES).map((type) => (
+            {Object.keys(TYPE_IMAGES).map(type => (
               <img
                 key={type}
                 src={TYPE_IMAGES[type]}
@@ -125,9 +127,9 @@ const AddPokemon = () => {
             ))}
           </div>
 
-          {/* STATS */}
+          {/* Stats */}
           <h3>Stats</h3>
-          {Object.keys(pokemon.base).map((stat) => (
+          {Object.keys(pokemon.base).map(stat => (
             <div key={stat} className="stat-group">
               <label>{stat}</label>
               <input
@@ -142,12 +144,11 @@ const AddPokemon = () => {
             </div>
           ))}
 
-          {/* IMAGE NORMALE */}
-          <h3>Image normale (URL)</h3>
+          {/* Image normale */}
+          <h3>Image normale</h3>
           <input
             type="text"
             name="image"
-            placeholder="URL de l'image"
             value={pokemon.image}
             onChange={handleChange}
             required
@@ -155,23 +156,16 @@ const AddPokemon = () => {
           {pokemon.image && (
             <div className="image-preview">
               {!imageError ? (
-                <img
-                  src={pokemon.image}
-                  alt="Preview Pokémon"
-                  onError={() => setImageError(true)}
-                />
-              ) : (
-                <p className="image-error">Impossible de charger l'image</p>
-              )}
+                <img src={pokemon.image} alt="Preview Pokémon" onError={() => setImageError(true)} />
+              ) : <p className="image-error">Impossible de charger l'image</p>}
             </div>
           )}
 
-          {/* IMAGE SHINY */}
-          <h3>Image shiny (URL)</h3>
+          {/* Image shiny */}
+          <h3>Image shiny</h3>
           <input
             type="text"
             name="shiny"
-            placeholder="URL de l'image shiny"
             value={pokemon.shiny}
             onChange={handleChange}
             required
@@ -179,22 +173,16 @@ const AddPokemon = () => {
           {pokemon.shiny && (
             <div className="image-preview">
               {!shinyError ? (
-                <img
-                  src={pokemon.shiny}
-                  alt="Preview Shiny"
-                  onError={() => setShinyError(true)}
-                />
-              ) : (
-                <p className="image-error">Impossible de charger l'image shiny</p>
-              )}
+                <img src={pokemon.shiny} alt="Preview Shiny" onError={() => setShinyError(true)} />
+              ) : <p className="image-error">Impossible de charger l'image shiny</p>}
             </div>
           )}
 
-          <button type="submit" className="submit-button">Ajouter le Pokémon</button>
+          <button type="submit" className="submit-button">Sauvegarder</button>
         </form>
       </div>
     </div>
   );
 };
 
-export default AddPokemon;
+export default UpdatePokemon;

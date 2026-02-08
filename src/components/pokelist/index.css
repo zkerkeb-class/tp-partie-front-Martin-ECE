@@ -2,7 +2,43 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
-  list-style: none;
-  padding: 0;
   justify-items: center;
+}
+.pokedex-title {
+  font-family: "Trebuchet MS", "Arial Black", sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+
+  /* Couleurs Pokémon */
+  color: #ffcb05; /* jaune Pokémon */
+  text-shadow:
+    3px 3px 0 #2a75bb,
+    -1px -1px 0 #2a75bb,
+    1px -1px 0 #2a75bb,
+    -1px 1px 0 #2a75bb,
+    1px 1px 0 #2a75bb;
+
+  text-align: center;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .poke-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .poke-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .poke-list {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }

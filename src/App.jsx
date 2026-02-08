@@ -1,22 +1,19 @@
-import './App.css'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import PokeList from './components/pokelist'
-import PokeDetails from './components/pokemondetails'
+import { Routes, Route } from "react-router-dom";
+import PokeList from "./components/pokelist";
 import AddPokemon from "./components/add";
-
+import PokeDetails from "./components/pokemondetails";
+import DeletePokemon from "./components/delete";
+import UpdatePokemon from "./components/update";
 function App() {
-
   return (
-    <div>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<PokeList />} />
-          <Route path="/pokemon/:id" element={<PokeDetails />} />
-          <Route path="/add" element={<AddPokemon />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  )
+    <Routes>
+      <Route path="/" element={<PokeList />} />
+      <Route path="/add" element={<AddPokemon />} />
+      <Route path="/pokemon/:id" element={<PokeDetails />} />
+      <Route path="/delete" element={<DeletePokemon />} />
+      <Route path="/update/:id" element={<UpdatePokemon />} />
+    </Routes>
+  );
 }
 
-export default App
+export default App;

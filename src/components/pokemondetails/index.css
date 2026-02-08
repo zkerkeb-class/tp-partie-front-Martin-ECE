@@ -1,0 +1,163 @@
+/* CONTENEUR PRINCIPAL */
+.pokedex-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #d32f2f, #b71c1c);
+  padding: 40px;
+  overflow-x: hidden; /* PLUS DE SCROLL HORIZONTAL */
+}
+
+/* CARD FIXE */
+.pokedex-card {
+  background: #f5f5f5;
+  border: 8px solid #222;
+  border-radius: 16px;
+  width: 500px;       /* largeur fixe */
+  height: 920px;      /* hauteur fixe */
+  padding: 20px;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  box-shadow: 0 10px 0 #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: hidden;   /* scroll vertical si nécessaire */
+  overflow-x: hidden; /* suppression scroll horizontal */
+}
+
+/* HEADER - NOM CENTRÉ */
+.pokedex-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* CENTRÉ */
+  background: #1976d2;
+  color: #ffeb3b;
+  padding: 5px 10px;  /* réduit le padding */
+  border-radius: 8px;
+  font-size: 1.3rem;  /* réduit légèrement la taille du texte */
+  text-shadow: 2px 2px #000;
+  width: 100%;
+}
+
+/* IMAGES */
+.pokedex-images {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.pokedex-images div {
+  text-align: center;
+}
+
+/* Images normales et shiny fixes */
+.pokedex-images img {
+  width: 180px;
+  height: 180px;
+  image-rendering: pixelated;
+  object-fit: contain;
+  background: white;
+  border: 4px solid #333;
+  border-radius: 8px;
+}
+
+/* TYPES AVEC IMAGE */
+.pokedex-types {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.type-image {
+  width: 120px;
+  object-fit: contain;
+  border-radius: 8px;
+  transition: transform 0.2s;
+}
+
+.type-image:hover {
+  transform: scale(1.1);
+}
+
+/* STATS */
+.pokedex-stats {
+  background: #c8e6c9;
+  border: 4px inset #333;
+  padding: 15px;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.stat-line {
+  display: grid;
+  grid-template-columns: 120px 1fr 40px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.stat-bar {
+  background: #eee;
+  height: 14px;
+  border: 2px solid #333;
+}
+
+.stat-fill {
+  background: linear-gradient(90deg, #4caf50, #2e7d32);
+  height: 100%;
+}
+
+/* BOUTON RETOUR EN HAUT */
+.back-button {
+  width: 100%;
+  padding: 12px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: 3px solid #0d47a1;
+  background: #1976d2;
+  color: white;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background: #1565c0;
+}
+
+/* Conteneur des boutons bas */
+.pokedex-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+/* Boutons Update & Delete uniformes */
+.action-button {
+  flex: 1;
+  padding: 12px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: 3px solid #0d47a1;
+  background: #ffca28;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.action-button:hover {
+  background: #ffc107;
+}
+
+/* Bouton delete spécifique */
+.delete-button {
+  background: #e53935;
+  border-color: #b71c1c;
+  color: white;
+}
+
+.delete-button:hover {
+  background: #d32f2f;
+}
