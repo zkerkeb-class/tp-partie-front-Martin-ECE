@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useLanguage } from "../../LanguageContext";
 import "./index.css";
 
 const TYPE_IMAGES = {
@@ -24,6 +25,7 @@ const TYPE_IMAGES = {
 };
 
 const UpdatePokemon = () => {
+  const { language } = useLanguage(); // hook de langue
   const { id } = useParams();
   const navigate = useNavigate();
   const [pokemon, setPokemon] = useState(null);
@@ -38,11 +40,11 @@ const UpdatePokemon = () => {
         setPokemon(data);
       } catch (err) {
         console.error(err);
-        alert("Erreur lors du chargement du Pokémon");
+        alert(language === "fr" ? "Erreur lors du chargement du Pokémon" : "Error loading Pokémon");
       }
     };
     fetchPokemon();
-  }, [id]);
+  }, [id, language]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,22 +65,19 @@ const UpdatePokemon = () => {
   const toggleType = (type) => {
     if (!pokemon) return;
     let newTypes = [...pokemon.type];
-    if (newTypes.includes(type)) {
-      newTypes = newTypes.filter((t) => t !== type);
-    } else if (newTypes.length < 2) {
-      newTypes.push(type);
-    }
+    if (newTypes.includes(type)) newTypes = newTypes.filter((t) => t !== type);
+    else if (newTypes.length < 2) newTypes.push(type);
     setPokemon({ ...pokemon, type: newTypes });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!pokemon.image || !pokemon.shiny || Object.values(pokemon.name).some(v => v.trim() === "")) {
-      alert("Veuillez remplir tous les champs de nom et images");
+      alert(language === "fr" ? "Veuillez remplir tous les champs de nom et images" : "Please fill all name fields and images");
       return;
     }
     if (pokemon.type.length === 0) {
-      alert("Veuillez sélectionner au moins un type (max 2)");
+      alert(language === "fr" ? "Veuillez sélectionner au moins un type (max 2)" : "Please select at least one type (max 2)");
       return;
     }
 
@@ -89,32 +88,36 @@ const UpdatePokemon = () => {
         body: JSON.stringify(pokemon),
       });
       if (res.ok) navigate("/");
-      else alert("Erreur lors de la mise à jour du Pokémon");
+      else alert(language === "fr" ? "Erreur lors de la mise à jour du Pokémon" : "Error updating Pokémon");
     } catch (err) {
       console.error(err);
-      alert("Erreur serveur");
+      alert(language === "fr" ? "Erreur serveur" : "Server error");
     }
   };
 
-  if (!pokemon) return <p>Chargement...</p>;
+  if (!pokemon) return <p>{language === "fr" ? "Chargement..." : "Loading..."}</p>;
 
   return (
     <div className="update-container">
       <div className="update-card">
-        <h2>Modifier le Pokémon</h2>
-        <button className="back-button" onClick={() => navigate(-1)}>Retour</button>
+        <h2>{language === "fr" ? "Modifier le Pokémon" : "Update Pokémon"}</h2>
+        <button className="back-button" onClick={() => navigate(-1)}>
+          {language === "fr" ? "Retour" : "Back"}
+        </button>
 
         <form onSubmit={handleSubmit}>
           {/* Noms */}
           {Object.keys(pokemon.name).map(lang => (
             <div key={lang} className="input-group">
-              <label>Nom ({lang})</label>
+              <label>
+                {language === "fr" ? "Nom" : "Name"} ({lang})
+              </label>
               <input type="text" name={lang} value={pokemon.name[lang]} onChange={handleChange} required />
             </div>
           ))}
 
           {/* Types */}
-          <h3>Types (max 2)</h3>
+          <h3>{language === "fr" ? "Types (max 2)" : "Types (max 2)"}</h3>
           <div className="type-selector">
             {Object.keys(TYPE_IMAGES).map(type => (
               <img
@@ -128,57 +131,48 @@ const UpdatePokemon = () => {
           </div>
 
           {/* Stats */}
-          <h3>Stats</h3>
+          <h3>{language === "fr" ? "Stats" : "Stats"}</h3>
           {Object.keys(pokemon.base).map(stat => (
             <div key={stat} className="stat-group">
               <label>{stat}</label>
-              <input
-                type="range"
-                min="1"
-                max="255"
-                name={stat}
-                value={pokemon.base[stat]}
-                onChange={handleChange}
-              />
+              <input type="range" min="1" max="255" name={stat} value={pokemon.base[stat]} onChange={handleChange} />
               <span>{pokemon.base[stat]}</span>
             </div>
           ))}
 
           {/* Image normale */}
-          <h3>Image normale</h3>
-          <input
-            type="text"
-            name="image"
-            value={pokemon.image}
-            onChange={handleChange}
-            required
-          />
+          <h3>{language === "fr" ? "Image normale" : "Normal image"}</h3>
+          <input type="text" name="image" value={pokemon.image} onChange={handleChange} required />
           {pokemon.image && (
             <div className="image-preview">
               {!imageError ? (
                 <img src={pokemon.image} alt="Preview Pokémon" onError={() => setImageError(true)} />
-              ) : <p className="image-error">Impossible de charger l'image</p>}
+              ) : (
+                <p className="image-error">
+                  {language === "fr" ? "Impossible de charger l'image" : "Cannot load image"}
+                </p>
+              )}
             </div>
           )}
 
           {/* Image shiny */}
-          <h3>Image shiny</h3>
-          <input
-            type="text"
-            name="shiny"
-            value={pokemon.shiny}
-            onChange={handleChange}
-            required
-          />
+          <h3>{language === "fr" ? "Image shiny" : "Shiny image"}</h3>
+          <input type="text" name="shiny" value={pokemon.shiny} onChange={handleChange} required />
           {pokemon.shiny && (
             <div className="image-preview">
               {!shinyError ? (
                 <img src={pokemon.shiny} alt="Preview Shiny" onError={() => setShinyError(true)} />
-              ) : <p className="image-error">Impossible de charger l'image shiny</p>}
+              ) : (
+                <p className="image-error">
+                  {language === "fr" ? "Impossible de charger l'image shiny" : "Cannot load shiny image"}
+                </p>
+              )}
             </div>
           )}
 
-          <button type="submit" className="submit-button">Sauvegarder</button>
+          <button type="submit" className="submit-button">
+            {language === "fr" ? "Sauvegarder" : "Save"}
+          </button>
         </form>
       </div>
     </div>

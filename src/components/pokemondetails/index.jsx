@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useLanguage } from "../../LanguageContext";
 import "./index.css";
 
 const TYPE_IMAGES = {
@@ -26,6 +27,7 @@ const TYPE_IMAGES = {
 const PokeDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { language } = useLanguage();
   const [pokemon, setPokemon] = useState(null);
 
   useEffect(() => {
@@ -35,49 +37,49 @@ const PokeDetails = () => {
       .catch((err) => console.error(err));
   }, [id]);
 
-  if (!pokemon) return <p>Chargement...</p>;
+  if (!pokemon) return <p>{language === "fr" ? "Chargement..." : "Loading..."}</p>;
 
   const shinyImage = pokemon.shiny || `http://localhost:3000/assets/pokemons/shiny/${pokemon.id}.png`;
 
   const handleDelete = async () => {
-    if (window.confirm(`Voulez-vous vraiment supprimer ${pokemon.name.french} ?`)) {
-      try {
-        const res = await fetch(`http://localhost:3000/pokemons/${pokemon.id}`, {
-          method: "DELETE",
-        });
-        if (res.ok) navigate("/");
-        else alert("Erreur lors de la suppression");
-      } catch (err) {
-        console.error(err);
-        alert("Erreur serveur");
-      }
+    const confirmMessage =
+      language === "fr"
+        ? `Voulez-vous vraiment supprimer ${pokemon.name.french} ?`
+        : `Do you really want to delete ${pokemon.name.english}?`;
+
+    if (!window.confirm(confirmMessage)) return;
+
+    try {
+      const res = await fetch(`http://localhost:3000/pokemons/${pokemon.id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) navigate("/");
+      else alert(language === "fr" ? "Erreur lors de la suppression" : "Error deleting Pokémon");
+    } catch (err) {
+      console.error(err);
+      alert(language === "fr" ? "Erreur serveur" : "Server error");
     }
   };
 
   const handleUpdate = () => {
     navigate(`/update/${pokemon.id}`);
-
   };
 
   return (
     <div className="pokedex-container">
       <div className="pokedex-card">
-
-        {/* BOUTON RETOUR EN HAUT */}
         <button className="back-button" onClick={() => navigate(-1)}>
-          Retour au Pokédex
+          {language === "fr" ? "Retour au Pokédex" : "Back to Pokédex"}
         </button>
 
-        {/* HEADER */}
         <div className="pokedex-header">
-          <h1>{pokemon.name.french}</h1>
+          <h1>{language === "fr" ? pokemon.name.french : pokemon.name.english}</h1>
           <span># {pokemon.id}</span>
         </div>
 
-        {/* IMAGES */}
         <div className="pokedex-images">
           <div>
-            <p>Normal</p>
+            <p>{language === "fr" ? "Normal" : "Normal"}</p>
             <img src={pokemon.image} alt={pokemon.name.french} />
           </div>
           <div>
@@ -86,41 +88,30 @@ const PokeDetails = () => {
           </div>
         </div>
 
-        {/* TYPES */}
         <div className="pokedex-types">
           {pokemon.type.map((type) => (
-            <img
-              key={type}
-              src={TYPE_IMAGES[type]}
-              alt={type}
-              className="type-image"
-            />
+            <img key={type} src={TYPE_IMAGES[type]} alt={type} className="type-image" />
           ))}
         </div>
 
-        {/* STATS */}
         <div className="pokedex-stats">
           {Object.entries(pokemon.base).map(([stat, value]) => (
             <div key={stat} className="stat-line">
               <span>{stat}</span>
               <div className="stat-bar">
-                <div
-                  className="stat-fill"
-                  style={{ width: `${(value / 255) * 100}%` }}
-                />
+                <div className="stat-fill" style={{ width: `${(value / 255) * 100}%` }} />
               </div>
               <strong>{value}</strong>
             </div>
           ))}
         </div>
 
-        {/* BOUTONS UPDATE & DELETE EN BAS */}
         <div className="pokedex-buttons">
           <button className="action-button" onClick={handleUpdate}>
-            Mettre à jour
+            {language === "fr" ? "Mettre à jour" : "Update"}
           </button>
           <button className="action-button delete-button" onClick={handleDelete}>
-            Supprimer
+            {language === "fr" ? "Supprimer" : "Delete"}
           </button>
         </div>
       </div>

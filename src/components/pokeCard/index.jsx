@@ -1,71 +1,49 @@
 import "./index.css";
 import { Link } from "react-router-dom";
+import { useLanguage } from "../../LanguageContext";
 
-const PokeCard = ({ pokemon }) => {
+const TEXT = {
+  fr: { hp: "PV", attack: "Attaque", defense: "Défense", speed: "Vitesse" },
+  en: { hp: "HP", attack: "Attack", defense: "Defense", speed: "Speed" },
+};
+
+const LANG_MAP = { fr: "french", en: "english" };
+
+const PokeCard = ({ pokemon, langKey }) => {
+  const { language } = useLanguage();
+  const t = TEXT[language];
+  const key = langKey || LANG_MAP[language] || "french";
+
   if (!pokemon) return null;
 
-  // Données venant de MongoDB
   const type = pokemon.type?.[0]?.toLowerCase() || "normal";
-  const image = pokemon.image;
-  const hp = pokemon.base.HP;
-  const attack = pokemon.base.Attack;
-  const defense = pokemon.base.Defense;
-  const speed = pokemon.base.Speed;
 
   return (
-    <Link
-      to={`/pokemon/${pokemon.id}`}
-      style={{ textDecoration: "none" }}
-    >
+    <Link to={`/pokemon/${pokemon.id}`} style={{ textDecoration: "none" }}>
       <div className="poke-card-container">
         <div className="poke-card-wrapper">
           <div className="poke-card-inner">
-
-            {/* FRONT */}
             <div className={`poke-card tcg-card ${type}`}>
-              {/* HEADER */}
               <div className="tcg-header">
-                <span className="tcg-name">{pokemon.name.french}</span>
-                <span className="tcg-hp">PV {hp}</span>
+                <span className="tcg-name">{pokemon.name[key]}</span>
+                <span className="tcg-hp">{t.hp} {pokemon.base.HP}</span>
               </div>
-
-              {/* IMAGE */}
               <div className="tcg-image-frame">
-                <img src={image} alt={pokemon.name.french} />
+                <img src={pokemon.image} alt={pokemon.name[key]} />
               </div>
-
-              {/* STATS */}
               <div className="tcg-attacks">
-                <div className="tcg-attack">
-                  <span>Attaque</span>
-                  <strong>{attack}</strong>
-                </div>
-                <div className="tcg-attack">
-                  <span>Défense</span>
-                  <strong>{defense}</strong>
-                </div>
-                <div className="tcg-attack">
-                  <span>Vitesse</span>
-                  <strong>{speed}</strong>
-                </div>
+                <div className="tcg-attack"><span>{t.attack}</span><strong>{pokemon.base.Attack}</strong></div>
+                <div className="tcg-attack"><span>{t.defense}</span><strong>{pokemon.base.Defense}</strong></div>
+                <div className="tcg-attack"><span>{t.speed}</span><strong>{pokemon.base.Speed}</strong></div>
               </div>
-
-              {/* FOOTER */}
               <div className="tcg-footer">
                 <span>ID #{pokemon.id}</span>
                 <span>Type {pokemon.type.join(", ")}</span>
               </div>
             </div>
-
-            {/* BACK */}
             <div className="poke-card poke-card-back">
-              <img
-                src="/back.jpg"
-                alt="Pokemon card back"
-                className="back-image"
-              />
+              <img src="/back.jpg" alt="Pokemon card back" className="back-image" />
             </div>
-
           </div>
         </div>
       </div>

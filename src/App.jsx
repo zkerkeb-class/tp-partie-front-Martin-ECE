@@ -4,6 +4,7 @@ import AddPokemon from "./components/add";
 import PokeDetails from "./components/pokemondetails";
 import DeletePokemon from "./components/delete";
 import UpdatePokemon from "./components/update";
+
 function App() {
   return (
     <Routes>

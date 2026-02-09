@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../../LanguageContext";
 import "./index.css";
 
 const TYPE_IMAGES = {
@@ -23,8 +24,41 @@ const TYPE_IMAGES = {
   Fairy: "http://localhost:3000/assets/types/18.png",
 };
 
+const TEXT = {
+  fr: {
+    title: "Ajouter un Pokémon",
+    back: "Retour",
+    typeTitle: "Types (max 2)",
+    statsTitle: "Stats",
+    imageNormal: "Image normale (URL)",
+    imageShiny: "Image shiny (URL)",
+    submit: "Ajouter le Pokémon",
+    fillFields: "Veuillez remplir tous les champs de nom et fournir les images (normale et shiny).",
+    selectType: "Veuillez sélectionner au moins un type (max 2).",
+    imgError: "Impossible de charger l'image",
+  },
+  en: {
+    title: "Add a Pokemon",
+    back: "Back",
+    typeTitle: "Types (max 2)",
+    statsTitle: "Stats",
+    imageNormal: "Normal image (URL)",
+    imageShiny: "Shiny image (URL)",
+    submit: "Add Pokemon",
+    fillFields: "Please fill all name fields and provide both images (normal and shiny).",
+    selectType: "Please select at least one type (max 2).",
+    imgError: "Cannot load image",
+  },
+};
+
+const LANG_MAP = { fr: "french", en: "english" };
+
 const AddPokemon = () => {
   const navigate = useNavigate();
+  const { language } = useLanguage();
+  const t = TEXT[language];
+  const langKey = LANG_MAP[language];
+
   const [imageError, setImageError] = useState(false);
   const [shinyError, setShinyError] = useState(false);
   const [pokemon, setPokemon] = useState({
@@ -52,24 +86,20 @@ const AddPokemon = () => {
 
   const toggleType = (type) => {
     let newTypes = [...pokemon.type];
-    if (newTypes.includes(type)) {
-      newTypes = newTypes.filter((t) => t !== type);
-    } else if (newTypes.length < 2) {
-      newTypes.push(type);
-    }
+    if (newTypes.includes(type)) newTypes = newTypes.filter((t) => t !== type);
+    else if (newTypes.length < 2) newTypes.push(type);
     setPokemon({ ...pokemon, type: newTypes });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Vérification obligatoire des champs
     if (!pokemon.image || !pokemon.shiny || Object.values(pokemon.name).some((v) => v.trim() === "")) {
-      alert("Veuillez remplir tous les champs de nom et fournir les images (normale et shiny).");
+      alert(t.fillFields);
       return;
     }
     if (pokemon.type.length === 0) {
-      alert("Veuillez sélectionner au moins un type (max 2).");
+      alert(t.selectType);
       return;
     }
 
@@ -90,17 +120,19 @@ const AddPokemon = () => {
   return (
     <div className="add-container">
       <div className="add-card">
-        <h2>Ajouter un Pokémon</h2>
+        <h2>{t.title}</h2>
 
         <button className="back-button" onClick={() => navigate(-1)}>
-          Retour
+          {t.back}
         </button>
 
         <form onSubmit={handleSubmit}>
           {/* NOMS */}
           {Object.keys(pokemon.name).map((lang) => (
             <div key={lang} className="input-group">
-              <label>Nom ({lang})</label>
+              <label>
+                {language === "fr" ? `Nom (${lang})` : `Name (${lang})`}
+              </label>
               <input
                 type="text"
                 name={lang}
@@ -111,8 +143,9 @@ const AddPokemon = () => {
             </div>
           ))}
 
+
           {/* TYPES */}
-          <h3>Types (max 2)</h3>
+          <h3>{t.typeTitle}</h3>
           <div className="type-selector">
             {Object.keys(TYPE_IMAGES).map((type) => (
               <img
@@ -126,7 +159,7 @@ const AddPokemon = () => {
           </div>
 
           {/* STATS */}
-          <h3>Stats</h3>
+          <h3>{t.statsTitle}</h3>
           {Object.keys(pokemon.base).map((stat) => (
             <div key={stat} className="stat-group">
               <label>{stat}</label>
@@ -143,11 +176,11 @@ const AddPokemon = () => {
           ))}
 
           {/* IMAGE NORMALE */}
-          <h3>Image normale (URL)</h3>
+          <h3>{t.imageNormal}</h3>
           <input
             type="text"
             name="image"
-            placeholder="URL de l'image"
+            placeholder={t.imageNormal}
             value={pokemon.image}
             onChange={handleChange}
             required
@@ -155,23 +188,19 @@ const AddPokemon = () => {
           {pokemon.image && (
             <div className="image-preview">
               {!imageError ? (
-                <img
-                  src={pokemon.image}
-                  alt="Preview Pokémon"
-                  onError={() => setImageError(true)}
-                />
+                <img src={pokemon.image} alt="Preview Pokémon" onError={() => setImageError(true)} />
               ) : (
-                <p className="image-error">Impossible de charger l'image</p>
+                <p className="image-error">{t.imgError}</p>
               )}
             </div>
           )}
 
           {/* IMAGE SHINY */}
-          <h3>Image shiny (URL)</h3>
+          <h3>{t.imageShiny}</h3>
           <input
             type="text"
             name="shiny"
-            placeholder="URL de l'image shiny"
+            placeholder={t.imageShiny}
             value={pokemon.shiny}
             onChange={handleChange}
             required
@@ -179,18 +208,14 @@ const AddPokemon = () => {
           {pokemon.shiny && (
             <div className="image-preview">
               {!shinyError ? (
-                <img
-                  src={pokemon.shiny}
-                  alt="Preview Shiny"
-                  onError={() => setShinyError(true)}
-                />
+                <img src={pokemon.shiny} alt="Preview Shiny" onError={() => setShinyError(true)} />
               ) : (
-                <p className="image-error">Impossible de charger l'image shiny</p>
+                <p className="image-error">{t.imgError}</p>
               )}
             </div>
           )}
 
-          <button type="submit" className="submit-button">Ajouter le Pokémon</button>
+          <button type="submit" className="submit-button">{t.submit}</button>
         </form>
       </div>
     </div>
