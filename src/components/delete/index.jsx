@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./index.css";
 
 const DeletePokemon = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -7,7 +8,7 @@ const DeletePokemon = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3000/pokemons")
+    fetch("http://localhost:3000/pokemons/all")
       .then((res) => res.json())
       .then((data) => setPokemons(data))
       .catch((err) => console.error(err));
@@ -45,74 +46,46 @@ const DeletePokemon = () => {
   );
 
   return (
-    <div style={{ padding: "40px" }}>
+    <div className="delete-container">
       <h2>Supprimer un Pokémon</h2>
 
       {/* RETOUR */}
-      <button
-        onClick={() => navigate(-1)}
-        style={{ marginBottom: "20px" }}
-      >
+      <button className="back-button" onClick={() => navigate(-1)}>
         ⬅ Retour
       </button>
 
       {/* RECHERCHE */}
-      <div style={{ marginBottom: "20px" }}>
-        <input
-          type="text"
-          placeholder="Rechercher un Pokémon..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          style={{
-            padding: "10px",
-            width: "300px",
-            borderRadius: "8px",
-            border: "1px solid #ccc",
-          }}
-        />
-      </div>
+      <input
+        type="text"
+        placeholder="Rechercher un Pokémon..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="search-input"
+      />
 
       {/* LISTE */}
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <div className="pokemon-list">
         {filteredPokemons.length > 0 ? (
           filteredPokemons.map((pokemon) => (
-            <li
-              key={pokemon.id}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "20px",
-                marginBottom: "15px",
-                borderBottom: "1px solid #ccc",
-                paddingBottom: "10px",
-              }}
-            >
+            <div key={pokemon.id} className="pokemon-card">
               <img
                 src={pokemon.image}
                 alt={pokemon.name.french}
-                width="60"
+                className="pokemon-img"
               />
-              <strong>{pokemon.name.french}</strong>
-
+              <strong className="pokemon-name">{pokemon.name.french}</strong>
               <button
+                className="delete-button"
                 onClick={() => handleDelete(pokemon.id)}
-                style={{
-                  marginLeft: "auto",
-                  background: "#d32f2f",
-                  color: "white",
-                  border: "none",
-                  padding: "8px 15px",
-                  cursor: "pointer",
-                }}
               >
                 Supprimer
               </button>
-            </li>
+            </div>
           ))
         ) : (
-          <p>Aucun Pokémon trouvé</p>
+          <p className="no-pokemon">Aucun Pokémon trouvé</p>
         )}
-      </ul>
+      </div>
     </div>
   );
 };
