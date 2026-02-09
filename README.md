@@ -1,6 +1,6 @@
 # React + Vite
 
-Lien de la vidéo en non répértorié :
+Lien de la vidéo en non répértorié : https://youtu.be/gyQmDMk4VlI
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
