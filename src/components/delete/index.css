@@ -1,0 +1,88 @@
+.delete-container {
+  padding: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  text-align: center;
+  color: #2a75bb;
+}
+
+.back-button {
+  margin-bottom: 20px;
+  background: #1976d2;
+  color: white;
+  padding: 10px 20px;
+  border: 3px solid #0d47a1;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background: #1565c0;
+}
+
+.search-input {
+  padding: 10px;
+  width: 300px;
+  max-width: 90%;
+  border-radius: 8px;
+  border: 2px solid #2a75bb;
+  margin-bottom: 30px;
+}
+
+.pokemon-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* cartes plus larges */
+  justify-items: center; /* centre horizontalement chaque carte */
+  align-items: start;
+  gap: 40px 30px; /* 40px vertical, 30px horizontal */
+}
+
+.pokemon-card {
+  background: #fff8c2;
+  border: 3px solid #2a75bb;
+  border-radius: 12px;
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  width: 160px; /* largeur fixe pour éviter chevauchement */
+}
+
+.pokemon-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.pokemon-name {
+  font-size: 1.2rem;
+  text-align: center;
+  word-break: break-word;
+}
+
+.delete-button {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.delete-button:hover {
+  background: #b71c1c;
+}
+
+.no-pokemon {
+  font-size: 1.1rem;
+  color: #555;
+  margin-top: 20px;
+}

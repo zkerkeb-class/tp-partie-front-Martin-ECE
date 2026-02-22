@@ -1,4 +1,13 @@
 # React + Vite
+----------------------------------------------------
+Lien de la vidéo en non répértorié : https://youtu.be/rNIXHmplBsc
+
+Liste des fonctionnalités supplémentaires :
+- ajout d'un systeme de choix de langue FR/EN
+- ajout d'un systeme de combat entre deux pokemon choisis
+- ajout d'un systeme de recherche en temps réel
+
+----------------------------------------------------
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
