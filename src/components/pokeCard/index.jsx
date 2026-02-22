@@ -26,23 +26,48 @@ const PokeCard = ({ pokemon, langKey }) => {
             <div className={`poke-card tcg-card ${type}`}>
               <div className="tcg-header">
                 <span className="tcg-name">{pokemon.name[key]}</span>
-                <span className="tcg-hp">{t.hp} {pokemon.base.HP}</span>
+                <span className="tcg-hp">
+                  {t.hp} {pokemon.base.HP}
+                </span>
               </div>
-              <div className="tcg-image-frame">
+
+              {/* IMAGE FRAME AVEC BACKGROUND TYPE */}
+              <div
+                className="tcg-image-frame"
+                style={{
+                  backgroundImage: `url(/${type}.png)`
+                }}
+              >
                 <img src={pokemon.image} alt={pokemon.name[key]} />
               </div>
+
               <div className="tcg-attacks">
-                <div className="tcg-attack"><span>{t.attack}</span><strong>{pokemon.base.Attack}</strong></div>
-                <div className="tcg-attack"><span>{t.defense}</span><strong>{pokemon.base.Defense}</strong></div>
-                <div className="tcg-attack"><span>{t.speed}</span><strong>{pokemon.base.Speed}</strong></div>
+                <div className="tcg-attack">
+                  <span>{t.attack}</span>
+                  <strong>{pokemon.base.Attack}</strong>
+                </div>
+                <div className="tcg-attack">
+                  <span>{t.defense}</span>
+                  <strong>{pokemon.base.Defense}</strong>
+                </div>
+                <div className="tcg-attack">
+                  <span>{t.speed}</span>
+                  <strong>{pokemon.base.Speed}</strong>
+                </div>
               </div>
+
               <div className="tcg-footer">
                 <span>ID #{pokemon.id}</span>
                 <span>Type {pokemon.type.join(", ")}</span>
               </div>
             </div>
+
             <div className="poke-card poke-card-back">
-              <img src="/back.jpg" alt="Pokemon card back" className="back-image" />
+              <img
+                src="/back.jpg"
+                alt="Pokemon card back"
+                className="back-image"
+              />
             </div>
           </div>
         </div>

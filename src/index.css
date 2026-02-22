@@ -5,10 +5,10 @@
 
   color-scheme: light dark;
   color: rgba(0, 0, 0, 0.87);
-  background: linear-gradient(135deg, #2a75bb, #ffcb05);
+  background: #ffffffaa;
 
   font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizeLegibility; 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;

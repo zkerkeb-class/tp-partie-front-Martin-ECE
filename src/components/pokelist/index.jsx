@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PokeCard from "../pokecard";
+import PokeCard from "../pokeCard";
 import { useLanguage } from "../../LanguageContext";
 import "./index.css";
 
@@ -12,6 +12,7 @@ const TEXT = {
     search: "Rechercher un Pokémon...",
     add: "Ajouter un Pokémon",
     delete: "Supprimer un Pokémon",
+    combat : "Mode Combat",
     prev: "◀ Précédent",
     next: "Suivant ▶",
     none: "Aucun Pokémon trouvé",
@@ -22,6 +23,7 @@ const TEXT = {
     search: "Search a Pokémon...",
     add: "Add Pokémon",
     delete: "Delete Pokémon",
+    combat : "Combat Mode",
     prev: "◀ Previous",
     next: "Next ▶",
     none: "No Pokémon found",
@@ -113,6 +115,7 @@ const PokeList = () => {
       <div className="action-buttons">
         <Link to="/add"><button>{t.add}</button></Link>
         <Link to="/delete"><button>{t.delete}</button></Link>
+        <Link to="/combat"><button>{t.combat}</button></Link>
       </div>
 
       {/* GRILLE POKÉMON */}

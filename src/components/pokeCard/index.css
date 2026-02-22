@@ -1,4 +1,4 @@
-LISTE DE CARTES
+/* LISTE DE CARTES */
 .poke-list {
   display: flex;
   flex-wrap: wrap;
@@ -74,16 +74,8 @@ LISTE DE CARTES
   color: #d32f2f;
 }
 
-/* EVOLUTION */
-.tcg-evolution {
-  font-size: 11px;
-  font-style: italic;
-  margin-bottom: 4px;
-}
-
-/* IMAGE */
+/* IMAGE FRAME (MODIFIÉ) */
 .tcg-image-frame {
-  background: white;
   border: 3px solid #999;
   border-radius: 6px;
   height: 150px;
@@ -91,10 +83,17 @@ LISTE DE CARTES
   justify-content: center;
   align-items: center;
   margin-bottom: 6px;
+  overflow: hidden;
+  position: relative;
+  background-size: cover;
+  background-position: center;
 }
 
 .tcg-image-frame img {
   max-height: 140px;
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.4));
 }
 
 /* ATTAQUES */
@@ -126,7 +125,7 @@ LISTE DE CARTES
   color: #000;
 }
 
-/* TYPES */
+/* TYPES (on garde si tu veux les couleurs de carte) */
 .fire { background: linear-gradient(135deg, #ff9a3c, #ff612b); }
 .water { background: linear-gradient(135deg, #4facfe, #00f2fe); }
 .grass { background: linear-gradient(135deg, #43e97b, #38f9d7); }
